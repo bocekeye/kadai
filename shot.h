@@ -1,6 +1,8 @@
 #pragma once
 #include "Vec2.h"
-#include "Enemy.h"
+
+class Enemy;
+
 class SceneMain;
 
 class Shot
@@ -15,6 +17,8 @@ public:
 
 	virtual void start(Vec2 pos);
 
+	virtual void enemyStart(Vec2 pos);
+
 	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 	// 更新
 	virtual void update();
@@ -23,11 +27,12 @@ public:
 
 	Vec2 getPos() const { return m_pos; }
 
-	//float getLeft() const { return m_pos.x; }
-	//float getRight() const { return m_pos.x + m_size.x; }
-	//float getUp() const { return m_pos.y; }
-	//float getBottom() const { return m_pos.y + m_pos.y; }
+	Vec2 getColSize() const { return m_colSize; }
 
+	float getLeft() const { return m_pos.x; }
+	float getRight() const { return m_pos.x + m_colSize.x; }
+	float getUp() const { return m_pos.y; }
+	float getBottom() const { return m_pos.y + m_colSize.y; }
 
 	//存在するか
 	bool isExist() const { return m_isExist; }
@@ -39,6 +44,9 @@ protected:
 
 	//SceneMainのポインタ
 	SceneMain* m_pMain;
+
+	// 当たり判定の幅と高さ
+	Vec2 m_colSize;
 
 	// 表示位置
 	Vec2	m_pos;

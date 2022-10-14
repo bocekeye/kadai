@@ -1,5 +1,5 @@
 #include "DxLib.h"
-
+#include "Enemy.h"
 #include "SceneMain.h"
 #include <cassert>
 #include <vector>
@@ -20,7 +20,7 @@ void SceneMain::init()
 
 	m_shot.setMain(this);
 	
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Enemy* pEnemy = new Enemy;
 		pEnemy->init();
@@ -34,39 +34,6 @@ void SceneMain::init()
 
 		m_pEnemyVt.push_back(pEnemy);
 	}
-
-	for (int i = 0; i < 15; i++)
-	{
-		Enemy* pEnemy = new Enemy;
-		pEnemy->init();
-		pEnemy->setMain(this);
-
-		pos.x = (i % 5) * 30 + 200; //‚ ‚Ü‚è
-		pos.y = (i / 5) * 30 + 50;
-
-
-		pEnemy->set(pos);
-
-		m_pEnemyVt.push_back(pEnemy);
-	}
-	for (int i = 0; i < 15; i++)
-	{
-		Enemy* pEnemy = new Enemy;
-		pEnemy->init();
-		pEnemy->setMain(this);
-
-		pos.x = (i % 5) * 30 + 370; //‚ ‚Ü‚è
-		pos.y = (i / 5) * 30 + 50;
-
-
-		pEnemy->set(pos);
-
-		m_pEnemyVt.push_back(pEnemy);
-	}
-
-	
-	/*m_enemy.init();
-	m_enemy.setMain(this);*/
 
 }
 
@@ -85,13 +52,17 @@ void SceneMain::init()
 void SceneMain::update()
 {
 	m_player.update();
-//	m_enemy.update();
 
 	for (auto& pEnemy : m_pEnemyVt)
 	{
 		assert(pEnemy);
-
 		pEnemy->update();
+	}
+
+	for (auto& pShot : m_pShotVt)
+	{
+		assert(pShot);
+		pShot->update();
 	}
 
 
@@ -99,11 +70,19 @@ void SceneMain::update()
 	std::vector<Shot*>::iterator it = m_pShotVt.begin();
 	while (it != m_pShotVt.end())
 	{
+		for (auto& shot : m_pShotVt)
+		{
+			Shot* pShot = static_cast<Shot*>(shot);
+
+			for (auto& enemy : m_pEnemyVt)
+			{
+				Enemy* pEnemy = static_cast<Enemy*>(enemy);
+				pShot->isCol(*pEnemy);
+			}
+		}
+
 		auto& pShot = (*it);
 
-		assert(pShot);
-
-		pShot->update();
 		if (!pShot->isExist())
 		{
 			delete pShot;
@@ -121,7 +100,6 @@ void SceneMain::draw()
 {
 	DrawString(m_textPosX, 0, "ƒƒCƒ“‰æ–Ê", GetColor(255, 255, 255));
 	m_player.draw();
-	m_enemy.draw();
 
 	for (auto& pEnemy : m_pEnemyVt)
 	{
@@ -146,6 +124,15 @@ bool SceneMain::createShot(Vec2 pos)
 {
 	Shot* pShot = new Shot;
 	pShot->start(pos);
+	m_pShotVt.push_back(pShot);
+
+	return true;
+}
+
+bool SceneMain::enemyShot(Vec2 pos)
+{
+	Shot* pShot = new Shot;
+	pShot->enemyStart(pos);
 	m_pShotVt.push_back(pShot);
 
 	return true;

@@ -2,8 +2,10 @@
 #include "SceneBase.h"
 #include "shot.h"
 #include "player.h"
-#include "Enemy.h"
+
 #include <vector>
+
+class Enemy;
 
 class SceneMain : public SceneBase
 {
@@ -23,7 +25,11 @@ public:
 	virtual void update();
 	virtual void draw();
 
+	//プレイヤーのショットの生成
 	bool createShot(Vec2 pos);
+
+	//敵のショットの生成
+	bool enemyShot (Vec2 pos);
 
 	virtual bool isEnd() { return m_isEnd; }
 private:
@@ -36,8 +42,6 @@ private:
 
 	//プレイヤー
 	Player m_player;
-
-	Enemy m_enemy;
 
 	Shot m_shot;
 

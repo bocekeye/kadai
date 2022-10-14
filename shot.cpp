@@ -1,10 +1,10 @@
 #include "DxLib.h"
 #include "shot.h"
 #include "game.h"
-
+#include "Enemy.h"
 namespace
 {
-
+	constexpr int kSize = 10;
 	constexpr float kShotSpeed = -10.0f;
 
 }
@@ -43,16 +43,34 @@ void Shot::start(Vec2 pos)
 	m_vec.y = kShotSpeed;
 }
 
+void Shot::enemyStart(Vec2 pos)
+{
+	m_isExist = true;
+	m_pos = pos;
+
+	m_vec.y = -kShotSpeed;
+}
+
 void Shot::update()
 {
-	m_pos += m_vec;
 	if (!m_isExist) return;
+	m_pos += m_vec;
+
+	if (m_pos.y < 0.0f)
+	{
+		m_isExist = false;
+	}
+	if (m_pos.y > Game::kScreenHeight - kSize)
+	{
+		m_isExist = false;
+	}
 }
 // •\Ž¦
 void Shot::draw()
 {
 	if (!m_isExist) return;
-	DrawCircle(m_pos.x, m_pos.y, 10, GetColor(255,255,255), true);
+	DrawBox(m_pos.x, m_pos.y, m_pos.x + kSize, m_pos.y + kSize, GetColor(255, 255, 255), true);
+//	DrawCircle(m_pos.x, m_pos.y, 10, GetColor(255,255,255), true);
 }
 
 bool Shot::isCol(Enemy& enemy)
@@ -60,11 +78,9 @@ bool Shot::isCol(Enemy& enemy)
 	if (!m_isExist)return false;
 	if (!enemy.isExist()) return false;
 
-
 	if (enemy.getLeft() < getRight())return false;
-	if (enemy.getRight() > )return false;
-	if (enemy.getUp() < )return false;
-	if (enemy.getBottom() > )return false;
-
+	if (enemy.getRight() > getLeft())return false;
+	if (enemy.getUp() < getBottom())return false;
+	if (enemy.getBottom() > getUp())return false;
 
 }

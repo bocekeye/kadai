@@ -19,10 +19,14 @@ public:
 
 	void update();
 
+	
 	void draw();
 
+	//“G‚ÌƒTƒCƒY
 	void setSize(Vec2 size) { m_size = size; }
 
+	//“G‚ÌƒVƒ‡ƒbƒg
+	void addEnemyShot(Vec2 pos);
 
 	Vec2 getPos() const { return m_pos; }
 
@@ -30,6 +34,7 @@ public:
 
 	Vec2 getColSize() const { return m_colSize; }
 	
+	//“–‚½‚è”»’è‚ÌÀ•W
 	float getLeft() const { return m_pos.x; }
 	float getRight() const { return m_pos.x + m_size.x; }
 	float getUp() const { return m_pos.y; }
@@ -49,7 +54,11 @@ private:
 	// “–‚½‚è”»’è‚Ì•‚Æ‚‚³
 	Vec2 m_colSize;
 
-	int m_enemyInterval;
+	//ˆÚ“®ŠÔŠu
+	int m_waitFrame;
+
+	//“G‚ÌUŒ‚ŠÔŠu
+	int m_enemyShotInterval;
 
 	//‘¶İ‚·‚é‚©
 	bool    m_isExist;
