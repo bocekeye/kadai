@@ -19,6 +19,7 @@ Player::Player()
 {
 	m_pMain = nullptr;
 	m_shotInterval = 0;
+	m_isExist = false;
 }
 
 void Player::init()
@@ -28,6 +29,8 @@ void Player::init()
 	m_vec.x = 0;
 	m_vec.y = 0;
 	m_shotInterval = 0;
+
+	m_isExist = true;
 }
 
 void Player::update()
@@ -56,7 +59,7 @@ void Player::update()
 	{
 		m_vec.x += kSpeed;
 	}
-	m_pos += m_vec;
+		m_pos += m_vec;
 	if (m_pos.x < 0)
 	{
 		m_pos.x = 0;
@@ -69,5 +72,6 @@ void Player::update()
 
 void Player::draw()
 {
+
 	DrawBox(m_pos.x, m_pos.y, m_pos.x + kSize, m_pos.y + kSize, GetColor(255, 255, 255), true);
 }

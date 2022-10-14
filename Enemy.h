@@ -1,5 +1,7 @@
 #include "Vec2.h"
 
+class Shot;
+
 class SceneMain;
 
 class Enemy
@@ -11,35 +13,35 @@ public:
 
 	void init();
 
-	void setMain(SceneMain* pMain) { m_pMain = pMain; }
-
 	void set(Vec2 pos);
 
 	void end();
 
 	void update();
 
-	
 	void draw();
 
 	//敵のサイズ
 	void setSize(Vec2 size) { m_size = size; }
 
-	//敵のショット
-	void addEnemyShot(Vec2 pos);
+	bool isExist() { return m_isExist; }
 
-	Vec2 getPos() const { return m_pos; }
+	//弾との当たり判定
+	bool isCol(Shot& shot);
 
-	bool isExist() const { return m_isExist; }
+	void enemyDead();
 
-	Vec2 getColSize() const { return m_colSize; }
-	
 	//当たり判定の座標
 	float getLeft() const { return m_pos.x; }
-	float getRight() const { return m_pos.x + m_size.x; }
+	float getRight() const { return m_pos.x + m_colSize.x; }
 	float getUp() const { return m_pos.y; }
-	float getBottom() const{ return m_pos.y + m_pos.y; }
- 
+	float getBottom() const { return m_pos.y + m_colSize.y; }
+
+	void setMain(SceneMain* pMain) { m_pMain = pMain; }
+
+	Vec2 getPos() const { return m_pos; }
+	Vec2 getColSize() const { return m_colSize; }
+
 private:
 
 	//SceneMainのポインタ
@@ -61,8 +63,6 @@ private:
 	int m_enemyShotInterval;
 
 	//存在するか
-	bool    m_isExist;
-
-
+	bool  m_isExist;
 
 };

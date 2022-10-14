@@ -43,7 +43,7 @@ private:
 	//ÉvÉåÉCÉÑÅ[
 	Player m_player;
 
-	Shot m_shot;
+//	Shot m_shot;
 
 	std::vector<Shot*> m_pShotVt;
 	std::vector<Enemy*> m_pEnemyVt;
