@@ -22,6 +22,7 @@ Enemy::Enemy()
 {
 	m_pMain = nullptr;
 	m_waitFrame = 0;
+	m_enemyShotInterval = 0;
 	m_isExist = false;
 }
 Enemy::~Enemy()
@@ -107,9 +108,11 @@ bool Enemy::isCol(Shot& shot)
 	if (shot.getUp() > getBottom())return false;
 	if (shot.getBottom() < getUp())return false;
 
-	if (shot.getShotPlayer())
+
+	//’e‚ð‘Å‚Á‚½‚Ì‚ªƒvƒŒƒCƒ„[‚Ìê‡
+	if (!shot.getShotPlayer())
 	{
-		return true;
+		return false;
 	}
 
 	return true;

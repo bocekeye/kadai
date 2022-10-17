@@ -1,7 +1,7 @@
-#include "DxLib.h"
+#include  "DxLib.h"
 
-#include "player.h"
-#include "game.h"
+#include  "player.h"
+#include  "game.h"
 #include  "SceneMain.h"
 
 namespace
@@ -17,6 +17,7 @@ namespace
 
 Player::Player()
 {
+	m_handle = -1;
 	m_pMain = nullptr;
 	m_shotInterval = 0;
 	m_isExist = false;
@@ -26,6 +27,8 @@ void Player::init()
 {
 	m_pos.x = Game::kScreenWidth / 2; 
 	m_pos.y = 400;
+	m_colSize.x = kSize;
+	m_colSize.y = kSize;
 	m_vec.x = 0;
 	m_vec.y = 0;
 	m_shotInterval = 0;
@@ -44,7 +47,7 @@ void Player::update()
 	{
 		if (padState & PAD_INPUT_2)
 		{
-			if (m_pMain->createShot(getPos()))
+			if (m_pMain->playerShot(getPos()))
 			{
 				m_shotInterval = kShotInterval;
 			}
@@ -72,6 +75,33 @@ void Player::update()
 
 void Player::draw()
 {
+	//Ž€‚ñ‚Å‚¢‚é“G‚Í•\Ž¦‚µ‚È‚¢
+	if (!m_isExist) return;
 
-	DrawBox(m_pos.x, m_pos.y, m_pos.x + kSize, m_pos.y + kSize, GetColor(255, 255, 255), true);
+	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(255, 255, 255), true);
+}
+
+bool Player::isCol(Shot& shot)
+{
+	// ‘¶Ý‚µ‚Ä‚¢‚È‚¢ê‡
+	if (!m_isExist)return false;
+	if (!shot.isExist()) return false;
+
+	//Œ‚‚Á‚½’e‚ªŽ©•ª‚Å‚Í‚È‚¢ê‡
+	if (shot.getShotPlayer())
+	{
+		return false;
+	}
+
+	if (shot.getLeft() > getRight())return false;
+	if (shot.getRight() < getLeft())return false;
+	if (shot.getUp() > getBottom())return false;
+	if (shot.getBottom() < getUp())return false;
+
+	return true;
+}
+
+void Player::playerDead()
+{
+	m_isExist = false;
 }

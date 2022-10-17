@@ -15,8 +15,12 @@ void SceneMain::init()
 	m_textPosX = 0;
 	m_textVecX = 4;
 
-	m_player.init();
-	m_player.setMain(this);
+	Player* pPlayer = new Player;
+	pPlayer->init();
+	pPlayer->setMain(this);
+	m_pPlayerVt.push_back(pPlayer);
+	//m_player.init();
+	//m_player.setMain(this);
 
 	Shot* pShot = new Shot;
 	pShot->init();
@@ -31,13 +35,12 @@ void SceneMain::init()
 	//	pos.x = (i % 10) * 30.0f + 50.0f; //あまり
 	//	pos.y = (i / 10) * 30.0f + 50.0f;
 
-		pos.x = (i % 10) * 30.0f + 310.0f;
-		pos.y = (i / 10) * 30.0f + 100.0f;
+		pos.x =static_cast<float>(i % 10) * 30.0f + 310.0f;
+		pos.y = static_cast<float>(i / 10) * 30.0f + 100.0f;
 
 		pEnemy->set(pos);
 		m_pEnemyVt.push_back(pEnemy);
 	}
-
 }
 
 //void SceneMain::end()
@@ -54,12 +57,16 @@ void SceneMain::init()
 
 void SceneMain::update()
 {
-	m_player.update();
+	for (auto& pPlayer : m_pPlayerVt)
+	{
+		assert(pPlayer);
+		pPlayer->update();
+	}
+//	m_player.update();
 
 	for (auto& pEnemy : m_pEnemyVt)
 	{
 		assert(pEnemy);
-		
 		pEnemy->update();
 	}
 
@@ -75,32 +82,37 @@ void SceneMain::update()
 	{
 		for (auto& pEnemy : m_pEnemyVt)
 		{
-			bool isHitShot = pShot->isCol(*pEnemy);
-			bool isHitEnemy = pEnemy->isCol(*pShot);
-			if (isHitShot) //isHit = true
+			for (auto& pPlayer : m_pPlayerVt)
 			{
-				pShot->shotDead();
-			}
-			if (isHitShot)
-			{
-				pEnemy->enemyDead();
-			}
-			//デバック用
-			if (isHitShot)
-			{
-				DrawString(0, 45, "HIT!!!!!", GetColor(255, 255, 255));
-			}
-			else
-			{
-				DrawString(0, 60, "NO HIT", GetColor(255, 255, 255));
+				bool isHitShot = pShot->isCol(*pEnemy); //弾が敵に当たると弾が消える
+				bool isHitEnemy = pEnemy->isCol(*pShot); //弾が敵に当たると敵が消える
+				bool isHitPlayer = pPlayer->isCol(*pShot); //敵の弾がプレイヤーに当たるとプレイヤーが消える
+				if (isHitShot) //isHit = true
+				{
+					pShot->shotDead();
+				}
+				if (isHitShot)
+				{
+					pEnemy->enemyDead();
+				}
+				if (isHitPlayer)
+				{
+				//	pPlayer->playerDead();
+				}
+				//デバック用
+				if (isHitShot)
+				{
+					DrawString(0, 45, "HIT!!!!!", GetColor(255, 255, 255));
+				}
+				else
+				{
+					DrawString(0, 60, "NO HIT", GetColor(255, 255, 255));
+				}
 			}
 		}
 	}
 
-	/*if (pEnemy->isCol(*pShot))
-	{
-		pEnemy->enemyDead();
-	}*/
+	
 	while (it != m_pShotVt.end())
 	{
 		auto& pShot = (*it);
@@ -122,7 +134,14 @@ void SceneMain::update()
 void SceneMain::draw()
 {
 	DrawString(m_textPosX, 0, "メイン画面", GetColor(255, 255, 255));
-	m_player.draw();
+//	m_player.draw();
+
+	for (auto& pPlayer : m_pPlayerVt)
+	{
+		assert(pPlayer);
+
+		pPlayer->draw();
+	}
 
 	for (auto& pEnemy : m_pEnemyVt)
 	{
@@ -145,7 +164,7 @@ void SceneMain::draw()
 }
 
 //プレイヤーの弾の生成
-bool SceneMain::createShot(Vec2 pos)
+bool SceneMain::playerShot(Vec2 pos)
 {
 	Shot* pShot = new Shot;
 	pShot->init();
@@ -167,32 +186,3 @@ bool SceneMain::enemyShot(Vec2 pos)
 
 	return true;
 }
-
-
-//for (auto& shot : m_pShotVt)
-//{
-//	Shot* pShot = static_cast<Shot*>(shot);
-
-//	for (auto& enemy : m_pEnemyVt)
-//	{
-//		Enemy* pEnemy = static_cast<Enemy*>(enemy);
-
-//		if (pShot->isCol(*pEnemy))
-//		{
-//			pShot->shotDead();								
-//		}
-//	/*	if (pEnemy->isCol(*pShot))
-//		{
-//			pEnemy->enemyDead();
-//		}*/
-//		if (pShot->isCol(*pEnemy))
-//		{
-//			DrawString(0, 45, "HIT!!!!!", GetColor(255, 255, 255));
-//		}
-//		else
-//		{
-//			DrawString(0, 60, "NO HIT", GetColor(255, 255, 255));
-
-//		}
-//	}
-//}	

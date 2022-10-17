@@ -26,7 +26,7 @@ public:
 	virtual void draw();
 
 	//プレイヤーのショットの生成
-	bool createShot(Vec2 pos);
+	bool playerShot(Vec2 pos);
 
 	//敵のショットの生成
 	bool enemyShot (Vec2 pos);
@@ -39,12 +39,10 @@ private:
 
 	bool m_isEnd;
 
-
 	//プレイヤー
 	Player m_player;
 
-//	Shot m_shot;
-
+	std::vector<Player*> m_pPlayerVt;
 	std::vector<Shot*> m_pShotVt;
 	std::vector<Enemy*> m_pEnemyVt;
 };

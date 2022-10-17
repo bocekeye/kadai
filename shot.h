@@ -45,7 +45,6 @@ public:
 	void shotConfirPlayer(bool isPlayer){m_isPlayer = isPlayer;} //プレイヤーが撃つ玉か敵が打つ玉かの確認
 	bool getShotPlayer() const { return m_isPlayer; }
 
-
 	Vec2 getPos() const { return m_pos; }
 	Vec2 getColSize() const { return m_colSize; }
 

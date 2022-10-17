@@ -41,8 +41,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		scene.update();
 		scene.draw();
 
-//		player.update();
-//		player.draw();
+		player.update();
+		player.draw();
 
 		shot.update();
 		shot.draw();

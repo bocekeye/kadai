@@ -17,6 +17,7 @@ Shot::Shot()
 	m_vec.y = 0.0f;
 	m_pMain = nullptr;
 	m_isExist = false;
+	m_isPlayer = true;
 }
 
 Shot::~Shot()
@@ -85,13 +86,12 @@ bool Shot::isCol(Enemy& enemy)
 
 }
 
-
 void Shot::shotDead()
 {
 	m_isExist = false;
 }
 
-void Shot::shotConfirPlayer()
-{
-
-}
+//void Shot::shotConfirPlayer()
+//{
+//
+//}
