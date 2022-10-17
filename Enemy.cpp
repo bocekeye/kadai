@@ -53,12 +53,10 @@ void Enemy::end()
 }
 void Enemy::update()
 {
-
-	
-	/*m_waitFrame--;
+	m_waitFrame--;
 	if (m_waitFrame < 0) m_waitFrame = 0;
 
-	if (m_waitFrame <= 0)
+	/*if (m_waitFrame <= 0)
 	{
 		if (m_pos.x > Game::kScreenWidth - m_size.x)
 		{
@@ -87,6 +85,8 @@ void Enemy::update()
 			m_enemyShotInterval = kEnemyShotInterval;
 		}
 	}
+
+
 }
 
 void Enemy::draw()
@@ -110,13 +110,12 @@ bool Enemy::isCol(Shot& shot)
 
 
 	//’e‚ğ‘Å‚Á‚½‚Ì‚ªƒvƒŒƒCƒ„[‚Ìê‡
-	if (!shot.getShotPlayer())
+	if (!shot.isGetShotPlayer())
 	{
 		return false;
 	}
 
 	return true;
-
 }
 void Enemy::enemyDead()
 {

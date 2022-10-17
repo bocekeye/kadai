@@ -27,7 +27,6 @@ public:
 
 	//プレイヤーのショットの生成
 	bool playerShot(Vec2 pos);
-
 	//敵のショットの生成
 	bool enemyShot (Vec2 pos);
 

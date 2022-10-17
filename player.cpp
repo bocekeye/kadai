@@ -87,8 +87,8 @@ bool Player::isCol(Shot& shot)
 	if (!m_isExist)return false;
 	if (!shot.isExist()) return false;
 
-	//Œ‚‚Á‚½’e‚ª©•ª‚Å‚Í‚È‚¢ê‡
-	if (shot.getShotPlayer())
+	//Œ‚‚Á‚½’e‚ª©•ª‚¾‚Á‚½ê‡“–‚½‚è”»’è‚Ís‚í‚È‚¢
+	if (shot.isGetShotPlayer())
 	{
 		return false;
 	}

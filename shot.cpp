@@ -17,7 +17,7 @@ Shot::Shot()
 	m_vec.y = 0.0f;
 	m_pMain = nullptr;
 	m_isExist = false;
-	m_isPlayer = true;
+
 }
 
 Shot::~Shot()
@@ -31,6 +31,7 @@ void Shot::init()
 	m_colSize.x = kSize;
 	m_colSize.y = kSize;
 	m_vec.y = 0.0f;
+
 }
 
 
@@ -45,7 +46,10 @@ void Shot::enemyStart(Vec2 pos)
 {
 	m_isExist = true;
 	m_pos = pos;
+//	m_pos.x = m_colSize.x / 2;
 	m_vec.y = -kShotSpeed;
+
+
 }
 
 void Shot::update()
@@ -82,6 +86,8 @@ bool Shot::isCol(Enemy& enemy)
 	if (enemy.getBottom() < getUp())return false;
 
 
+
+
 	return true;
 
 }
@@ -91,7 +97,3 @@ void Shot::shotDead()
 	m_isExist = false;
 }
 
-//void Shot::shotConfirPlayer()
-//{
-//
-//}

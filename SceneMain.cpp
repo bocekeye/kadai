@@ -19,14 +19,12 @@ void SceneMain::init()
 	pPlayer->init();
 	pPlayer->setMain(this);
 	m_pPlayerVt.push_back(pPlayer);
-	//m_player.init();
-	//m_player.setMain(this);
 
 	Shot* pShot = new Shot;
 	pShot->init();
 	pShot->setMain(this);
 	
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		Enemy* pEnemy = new Enemy;
 		pEnemy->init();
@@ -35,8 +33,8 @@ void SceneMain::init()
 	//	pos.x = (i % 10) * 30.0f + 50.0f; //あまり
 	//	pos.y = (i / 10) * 30.0f + 50.0f;
 
-		pos.x =static_cast<float>(i % 10) * 30.0f + 310.0f;
-		pos.y = static_cast<float>(i / 10) * 30.0f + 100.0f;
+		pos.x =static_cast<float>(i % 10) * 40.0f + 10.0f;
+		pos.y = static_cast<float>(i / 10) * 40.0f + 100.0f;
 
 		pEnemy->set(pos);
 		m_pEnemyVt.push_back(pEnemy);
@@ -62,7 +60,6 @@ void SceneMain::update()
 		assert(pPlayer);
 		pPlayer->update();
 	}
-//	m_player.update();
 
 	for (auto& pEnemy : m_pEnemyVt)
 	{
@@ -97,7 +94,7 @@ void SceneMain::update()
 				}
 				if (isHitPlayer)
 				{
-				//	pPlayer->playerDead();
+					pPlayer->playerDead();
 				}
 				//デバック用
 				if (isHitShot)
@@ -112,7 +109,6 @@ void SceneMain::update()
 		}
 	}
 
-	
 	while (it != m_pShotVt.end())
 	{
 		auto& pShot = (*it);
@@ -128,25 +124,21 @@ void SceneMain::update()
 		}
 		it++;
 	}
-
 }
 
 void SceneMain::draw()
 {
 	DrawString(m_textPosX, 0, "メイン画面", GetColor(255, 255, 255));
-//	m_player.draw();
 
 	for (auto& pPlayer : m_pPlayerVt)
 	{
 		assert(pPlayer);
-
 		pPlayer->draw();
 	}
 
 	for (auto& pEnemy : m_pEnemyVt)
 	{
 		assert(pEnemy);
-
 		pEnemy->draw();
 	}
 	DrawFormatString(0, 30, GetColor(255, 255, 255), "敵の数:%d", m_pEnemyVt.size());
@@ -155,12 +147,10 @@ void SceneMain::draw()
 	for (auto& pShot : m_pShotVt)
 	{
 		assert(pShot);
-
 		pShot->draw();
 	}
 	//存在している弾の数の表示
 	DrawFormatString(0, 15, GetColor(255, 255, 255), "弾の数:%d", m_pShotVt.size());
-
 }
 
 //プレイヤーの弾の生成
