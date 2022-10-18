@@ -6,10 +6,10 @@
 
 namespace
 {
-	constexpr float kSpeed = 0.1f;
+	constexpr float kSpeed = 5.0f;
 
 	//プレイヤーのサイズ
-	constexpr int kSize = 20;
+	constexpr int kSize = 50;
 
 	constexpr int kShotInterval = 16;
 }
@@ -26,7 +26,7 @@ Player::Player()
 void Player::init()
 {
 	m_pos.x = Game::kScreenWidth / 2; 
-	m_pos.y = 400;
+	m_pos.y = Game::kScreenHeight - 100;
 	m_colSize.x = kSize;
 	m_colSize.y = kSize;
 	m_vec.x = 0;
@@ -56,11 +56,11 @@ void Player::update()
 	
 	if (padState & PAD_INPUT_LEFT)
 	{
-		m_vec.x -= kSpeed;
+		m_vec.x = -kSpeed;
 	}
 	if (padState & PAD_INPUT_RIGHT)
 	{
-		m_vec.x += kSpeed;
+		m_vec.x = kSpeed;
 	}
 		m_pos += m_vec;
 	if (m_pos.x < 0)

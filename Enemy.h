@@ -59,6 +59,11 @@ private:
 	//ˆÚ“®ŠÔŠu
 	int m_waitFrame;
 
+	//¶‰EˆÚ“®
+	int m_slide;
+
+	int m_moveCount;
+
 	//“G‚ÌUŒ‚ŠÔŠu
 	int m_enemyShotInterval;
 

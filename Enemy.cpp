@@ -5,13 +5,13 @@
 namespace
 {
 	//敵のサイズ
-	constexpr int kSize = 20;
+	constexpr int kSize = 30;
 
 	//敵のスピード
-	constexpr float kSpeed = 30.0f;
+	constexpr float kSpeed = 7.0f;
 
-	//
-	constexpr int kWaitFrame = 80;
+	//移動するまでの時間
+	constexpr int kWaitFrame = 50;
 
 	//敵のショット間隔
 	constexpr int kEnemyShotInterval = 100;
@@ -24,6 +24,8 @@ Enemy::Enemy()
 	m_waitFrame = 0;
 	m_enemyShotInterval = 0;
 	m_isExist = false;
+	m_slide = 0;
+	m_moveCount = 0;
 }
 Enemy::~Enemy()
 {
@@ -40,7 +42,9 @@ void Enemy::init()
 	m_vec.y = 0;
 	m_isExist = true;
 	m_enemyShotInterval = kEnemyShotInterval;
-	m_waitFrame = kWaitFrame;
+	m_waitFrame = 0;
+	m_slide = -1;
+	m_moveCount = 0;
 }
 
 void Enemy::set(Vec2 pos)
@@ -54,39 +58,41 @@ void Enemy::end()
 void Enemy::update()
 {
 	m_waitFrame--;
-	if (m_waitFrame < 0) m_waitFrame = 0;
-
-	/*if (m_waitFrame <= 0)
+	if (m_waitFrame <= 0)
 	{
-		if (m_pos.x > Game::kScreenWidth - m_size.x)
+		m_moveCount += m_slide;
+		if (m_slide > 0)
 		{
-			m_pos.x = Game::kScreenWidth - m_size.x;
-			m_pos.y += 20;
-			m_vec.x *= -1;
+			m_pos.x += kSpeed;
+			if (m_moveCount >= 0)
+			{
+				m_pos.y += 20.0f;
+				m_slide = -1;
+			}
 		}
-		if (m_pos.x < 0.0f)
+		if (m_slide < 0)
 		{
-			m_pos.x = 0.0f;
-			m_pos.y += 20;
-			m_vec.x *= -1;
+			m_pos.x -= kSpeed;
+			if (m_moveCount <= -10)
+			{
+				m_pos.y += 20.0f;
+				m_slide = 1;
+			}
 		}
-		m_pos += m_vec;
 		m_waitFrame = kWaitFrame;
-	}*/
+	}
 
 	m_enemyShotInterval--;
 
 	if (m_enemyShotInterval < 0) m_enemyShotInterval = 0;
 
-	if (m_enemyShotInterval <= 0)
+	if(m_enemyShotInterval <= 0)
 	{
 		if (m_pMain->enemyShot(getPos()))
 		{
 			m_enemyShotInterval = kEnemyShotInterval;
 		}
 	}
-
-
 }
 
 void Enemy::draw()
