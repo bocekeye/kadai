@@ -4,6 +4,8 @@
 
 void SceneTitle::init()
 {
+	
+	m_textPosX = 0;
 	m_textPosY = 0;
 	m_textVecY = 4;
 
@@ -20,6 +22,6 @@ void SceneTitle::update()
 }
 void SceneTitle::draw()
 {
-	DrawString(0, 0, "タイトル画面", GetColor(255, 255, 255));
-	DrawString(0, 15, "Zを押してゲームスタート", GetColor(255, 255, 255));
+	DrawString(m_textPosX, m_textPosY, "タイトル画面", GetColor(255, 255, 255));
+	DrawString(m_textPosX, m_textPosY + 15, "Zを押してゲームスタート", GetColor(255, 255, 255));
 }

@@ -5,7 +5,7 @@
 namespace
 {
 	constexpr int kSize = 10;
-	constexpr float kShotSpeed = -10.0f;
+	constexpr float kShotSpeed = -8.0f;
 }
 
 
@@ -16,6 +16,7 @@ Shot::Shot()
 
 	m_vec.y = 0.0f;
 	m_pMain = nullptr;
+	m_isPlayer = false;
 	m_isExist = false;
 
 }
@@ -31,9 +32,7 @@ void Shot::init()
 	m_colSize.x = kSize;
 	m_colSize.y = kSize;
 	m_vec.y = 0.0f;
-
 }
-
 
 void Shot::start(Vec2 pos)
 {
@@ -48,7 +47,6 @@ void Shot::enemyStart(Vec2 pos)
 	m_pos = pos;
 //	m_pos.x = m_colSize.x / 2;
 	m_vec.y = -kShotSpeed;
-
 
 }
 
@@ -65,15 +63,17 @@ void Shot::update()
 	{
 		m_isExist = false;
 	}
+	
 }
 // •\Ž¦
 void Shot::draw()
 {
 	if (!m_isExist) return;
 	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(255, 255, 255), true);
-//	DrawCircle(m_pos.x, m_pos.y, 10, GetColor(255,255,255), true);
 }
 
+
+//’e‚Æ“G‚Æ‚Ì“–‚½‚è”»’è
 bool Shot::isCol(Enemy& enemy)
 {
 	//‘¶Ý‚µ‚Ä‚¢‚È‚¢ê‡
@@ -85,11 +85,14 @@ bool Shot::isCol(Enemy& enemy)
 	if (enemy.getUp() > getBottom())return false;
 	if (enemy.getBottom() < getUp())return false;
 
-
+	//Ž©–Å‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+	if (!isGetShotPlayer())
+	{
+		return false;
+	}
 
 
 	return true;
-
 }
 
 void Shot::shotDead()

@@ -6,10 +6,10 @@
 
 namespace
 {
-	constexpr float kSpeed = 5.0f;
+	constexpr float kSpeed = 0.2f;
 
 	//プレイヤーのサイズ
-	constexpr int kSize = 50;
+	constexpr int kSize = 25.0f;
 
 	constexpr int kShotInterval = 16;
 }
@@ -25,8 +25,8 @@ Player::Player()
 
 void Player::init()
 {
-	m_pos.x = Game::kScreenWidth / 2; 
-	m_pos.y = Game::kScreenHeight - 100;
+	m_pos.x = Game::kScreenWidth / 2.0f; 
+	m_pos.y = Game::kScreenHeight - 100.0f;
 	m_colSize.x = kSize;
 	m_colSize.y = kSize;
 	m_vec.x = 0;
@@ -56,20 +56,22 @@ void Player::update()
 	
 	if (padState & PAD_INPUT_LEFT)
 	{
-		m_vec.x = -kSpeed;
+		m_vec.x -= kSpeed;
 	}
 	if (padState & PAD_INPUT_RIGHT)
 	{
-		m_vec.x = kSpeed;
+		m_vec.x += kSpeed;
 	}
 		m_pos += m_vec;
+
+	//プレイヤーの移動制限
 	if (m_pos.x < 0)
 	{
 		m_pos.x = 0;
 	}
-	if (m_pos.x > Game::kScreenWidth - kSize)
+	if (m_pos.x > Game::kScreenWidth - m_colSize.x)
 	{
-		m_pos.x = Game::kScreenWidth - kSize;
+		m_pos.x = Game::kScreenWidth - m_colSize.x;
 	}
 }
 
@@ -79,8 +81,11 @@ void Player::draw()
 	if (!m_isExist) return;
 
 	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(255, 255, 255), true);
+//	DrawLine(0, Game::kScreenHeight - 1, Game::kScreenWidth, Game::kScreenHeight - 1, GetColor(255, 255, 255));
 }
 
+
+//弾の当たり判定
 bool Player::isCol(Shot& shot)
 {
 	// 存在していない場合
@@ -88,15 +93,12 @@ bool Player::isCol(Shot& shot)
 	if (!shot.isExist()) return false;
 
 	//撃った弾が自分だった場合当たり判定は行わない
-	if (shot.isGetShotPlayer())
-	{
-		return false;
-	}
+	if (shot.isGetShotPlayer()) return false;
 
-	if (shot.getLeft() > getRight())return false;
-	if (shot.getRight() < getLeft())return false;
-	if (shot.getUp() > getBottom())return false;
-	if (shot.getBottom() < getUp())return false;
+	if (shot.getLeft() > getRight()) return false;
+	if (shot.getRight() < getLeft()) return false;
+	if (shot.getUp() > getBottom())  return false;
+	if (shot.getBottom() < getUp())  return false;
 
 	return true;
 }

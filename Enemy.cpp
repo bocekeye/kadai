@@ -11,10 +11,10 @@ namespace
 	constexpr float kSpeed = 7.0f;
 
 	//ˆÚ“®‚·‚é‚Ü‚Å‚ÌŽžŠÔ
-	constexpr int kWaitFrame = 50;
+	constexpr int kWaitFrame = 80;
 
 	//“G‚ÌƒVƒ‡ƒbƒgŠÔŠu
-	constexpr int kEnemyShotInterval = 100;
+	constexpr int kEnemyShotInterval = 180;
 }
 
 
@@ -57,42 +57,48 @@ void Enemy::end()
 }
 void Enemy::update()
 {
-	m_waitFrame--;
-	if (m_waitFrame <= 0)
-	{
-		m_moveCount += m_slide;
-		if (m_slide > 0)
-		{
-			m_pos.x += kSpeed;
-			if (m_moveCount >= 0)
-			{
-				m_pos.y += 20.0f;
-				m_slide = -1;
-			}
-		}
-		if (m_slide < 0)
-		{
-			m_pos.x -= kSpeed;
-			if (m_moveCount <= -10)
-			{
-				m_pos.y += 20.0f;
-				m_slide = 1;
-			}
-		}
-		m_waitFrame = kWaitFrame;
-	}
+	//m_waitFrame--;
+	//if (m_waitFrame <= 0)
+	//{
+	//	m_moveCount += m_slide;
+	//	if (m_slide > 0)  //
+	//	{
+	//		m_pos.x += kSpeed;
+	//		if (m_moveCount >= 0)
+	//		{
+	//			m_pos.y += 20.0f;
+	//			m_slide = -1;
+	//		}
+	//	}
+	//	if (m_slide < 0)
+	//	{
+	//		m_pos.x -= kSpeed;
+	//		if (m_moveCount <= -10)
+	//		{
+	//			m_pos.y += 20.0f;
+	//			m_slide = 1;
+	//		}
+	//	}
+	//	m_waitFrame = kWaitFrame;
+	//}
 
 	m_enemyShotInterval--;
 
 	if (m_enemyShotInterval < 0) m_enemyShotInterval = 0;
-
-	if(m_enemyShotInterval <= 0)
+	
+	//‘¶Ý‚µ‚Ä‚¢‚éê‡‚Ì‚Ý’e‚ðo‚·
+	if (m_isExist)
 	{
-		if (m_pMain->enemyShot(getPos()))
+		if (m_enemyShotInterval <= 0)
 		{
-			m_enemyShotInterval = kEnemyShotInterval;
+		
+			if (m_pMain->enemyShot(getPos()))
+			{
+				m_enemyShotInterval = kEnemyShotInterval;
+			}
 		}
 	}
+
 }
 
 void Enemy::draw()
@@ -103,27 +109,25 @@ void Enemy::draw()
 	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(0, 255, 255), true);
 }
 
+//“G‚Æ’e‚Ì“–‚½‚è”»’è
 bool Enemy::isCol(Shot& shot)
 {
 	//‘¶Ý‚µ‚Ä‚¢‚È‚¢ê‡
 	if (!m_isExist)return false;
 	if (!shot.isExist()) return false;
 
-	if (shot.getLeft() > getRight())return false;
-	if (shot.getRight() < getLeft())return false;
-	if (shot.getUp() > getBottom())return false;
-	if (shot.getBottom() < getUp())return false;
-
-
-	//’e‚ð‘Å‚Á‚½‚Ì‚ªƒvƒŒƒCƒ„[‚Ìê‡
-	if (!shot.isGetShotPlayer())
-	{
-		return false;
-	}
+	//’e‚ð‘Å‚Á‚½‚Ì‚ª“G‚Ìê‡“–‚½‚è”»’è‚ð‚È‚µ‚É‚·‚é
+	if (!shot.isGetShotPlayer()) return false;
+		
+	if (shot.getLeft() > getRight()) return false;
+	if (shot.getRight() < getLeft()) return false;
+	if (shot.getUp() > getBottom())  return false;
+	if (shot.getBottom() < getUp())  return false;
 
 	return true;
 }
 void Enemy::enemyDead()
 {
 	m_isExist = false;
+	
 }

@@ -2,7 +2,7 @@
 #include "SceneBase.h"
 #include "shot.h"
 #include "player.h"
-
+#include "Object.h"
 #include <vector>
 
 class Enemy;
@@ -41,6 +41,7 @@ private:
 	//ÉvÉåÉCÉÑÅ[
 	Player m_player;
 
+	std::vector<Object*> m_pObjectVt;
 	std::vector<Player*> m_pPlayerVt;
 	std::vector<Shot*> m_pShotVt;
 	std::vector<Enemy*> m_pEnemyVt;

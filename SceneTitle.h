@@ -1,5 +1,5 @@
 #pragma once
-#include "DxLib.h"
+
 #include "SceneBase.h"
 
 class SceneTitle : public SceneBase
@@ -7,6 +7,7 @@ class SceneTitle : public SceneBase
 public:
 	SceneTitle()
 	{
+		m_textPosX = 0;
 		m_textPosY = 0;
 		m_textVecY = 0;
 		m_isEnd = false;
@@ -21,6 +22,7 @@ public:
 
 	virtual bool isEnd() { return m_isEnd; }
 private:
+	int m_textPosX;
 	int m_textPosY;
 	int m_textVecY;
 
