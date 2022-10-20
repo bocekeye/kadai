@@ -11,21 +11,19 @@ namespace
 
 Object::Object()
 {
-	m_handle = -1;
-	m_hitCount = 0;
-	m_num = 0;
 	m_pMain = nullptr;
 	m_isExist = false;
 }
 
 void Object::init()
 {
-	m_pMain = nullptr;
-	m_isExist = true;
+	m_handle = -1;
 	m_colSize.x = kSize;
 	m_colSize.y = kSize;
 	m_hitCount = 0;
-	m_num = 0;
+
+	m_pMain = nullptr;
+	m_isExist = true;
 }
 void Object::set(Vec2 pos)
 {
@@ -41,14 +39,15 @@ void Object::draw()
 	//死んでいる敵は表示しない
 	if (!m_isExist) return;
 
-	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(0, 255, 255), false);
+//	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(0, 255, 255), false);
+	DrawGraphF(m_pos.x, m_pos.y, m_handle, true);
 }
 
-void Object::chageSize()
-{
-	//オブジェクトに当たるごとにサイズを小さくする
-	m_colSize *=  0.95;
-}
+//void Object::chageSize()
+//{
+//	//オブジェクトに当たるごとにサイズを小さくする
+//	m_colSize *=  0.95;
+//}
 
 
 bool Object::isCol(Shot& shot)

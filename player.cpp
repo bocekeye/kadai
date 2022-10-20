@@ -6,26 +6,29 @@
 
 namespace
 {
+	//プレイヤーの左右移動速度
 	constexpr float kSpeed = 0.2f;
 
 	//プレイヤーのサイズ
 	constexpr int kSize = 25.0f;
 
-	constexpr int kShotInterval = 16;
+	//ショット間隔
+	constexpr int kShotInterval = 20;
 }
 
 
 Player::Player()
 {
 	m_handle = -1;
-	m_pMain = nullptr;
 	m_shotInterval = 0;
+
+	m_pMain = nullptr;
 	m_isExist = false;
 }
 
 void Player::init()
 {
-	m_pos.x = Game::kScreenWidth / 2.0f; 
+	m_pos.x = Game::kScreenWidth / 2; 
 	m_pos.y = Game::kScreenHeight - 100.0f;
 	m_colSize.x = kSize;
 	m_colSize.y = kSize;
@@ -83,8 +86,9 @@ void Player::draw()
 	//死んでいる敵は表示しない
 	if (!m_isExist) return;
 
-	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(255, 255, 255), true);
+//	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(255, 255, 255), true);
 //	DrawLine(0, Game::kScreenHeight - 1, Game::kScreenWidth, Game::kScreenHeight - 1, GetColor(255, 255, 255));
+	DrawGraphF(m_pos.x, m_pos.y, m_handle, true);
 }
 
 

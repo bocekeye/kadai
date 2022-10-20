@@ -9,7 +9,10 @@ class Enemy
 public:
 
 	Enemy();
-	virtual ~Enemy();
+	virtual ~Enemy() {}
+
+	// グラフィックデータ設定
+	void setHandle(int handle) { m_handle = handle; }
 
 	void init();
 
@@ -41,17 +44,8 @@ public:
 
 private:
 
-	//SceneMainのポインタ
-	SceneMain* m_pMain;
-
-	//表示位置
-	Vec2 m_pos;
-
-	//移動
-	Vec2 m_vec;
-
-	// 当たり判定の幅と高さ
-	Vec2 m_colSize;
+	// グラフィックハンドル
+	int m_handle;
 
 	//移動間隔
 	int m_waitFrame;
@@ -64,6 +58,18 @@ private:
 
 	//敵の攻撃間隔
 	int m_enemyShotInterval;
+
+	//SceneMainのポインタ
+	SceneMain* m_pMain;
+
+	//表示位置
+	Vec2 m_pos;
+
+	//移動
+	Vec2 m_vec;
+
+	// 当たり判定の幅と高さ
+	Vec2 m_colSize;
 
 	//存在するか
 	bool  m_isExist;

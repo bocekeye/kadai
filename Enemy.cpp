@@ -8,28 +8,26 @@ namespace
 	constexpr int kSize = 30;
 
 	//敵のスピード
-	constexpr float kSpeed = 7.0f;
+	constexpr float kSpeed = 6.0f;
 
 	//移動するまでの時間
 	constexpr int kWaitFrame = 80;
 
 	//敵のショット間隔
-	constexpr int kEnemyShotInterval = 180;
+	constexpr int kEnemyShotInterval = 200;
 }
 
 
 Enemy::Enemy()
 {
-	m_pMain = nullptr;
+	m_handle = -1;
 	m_waitFrame = 0;
 	m_enemyShotInterval = 0;
-	m_isExist = false;
 	m_slide = 0;
 	m_moveCount = 0;
-}
-Enemy::~Enemy()
-{
 
+	m_pMain = nullptr;
+	m_isExist = false;
 }
 
 void Enemy::init()
@@ -107,7 +105,8 @@ void Enemy::draw()
 	//死んでいる敵は表示しない
 	if (!m_isExist) return;
 
-	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(0, 255, 255), true);
+//	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(0, 255, 255), true);
+	DrawGraphF(m_pos.x, m_pos.y, m_handle, true);
 }
 
 //敵と弾の当たり判定

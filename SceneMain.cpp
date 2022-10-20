@@ -1,11 +1,12 @@
 #include "DxLib.h"
-#include <cassert>
-#include <vector>
 
 #include "Enemy.h"
 #include "SceneMain.h"
 #include "SceneResult.h"
 #include "SceneFailResult.h"
+
+#include <cassert>
+#include <vector>
 
 namespace
 {
@@ -15,10 +16,14 @@ namespace
 
 void SceneMain::init()
 {
+	//グラフィックハンドルのロード
+	m_hPlayerGraghic = LoadGraph("data/player.png");
+	m_hEnemyGraghic = LoadGraph("data/enemy.png");
+	m_hPlayerShotGraghic = LoadGraph("data/playerShot.png");
+	m_hEnemyShotGraghic = LoadGraph("data/enemyShot.png");
+	m_hObjectGrahic = LoadGraph("data/object.png");
+
 	Vec2 pos;
-	m_hitEnemyCount = 0;
-	m_hitObjectCount = 0;
-	m_isEnd = false;
 
 	Player* pPlayer = new Player;
 	pPlayer->init();
@@ -35,10 +40,11 @@ void SceneMain::init()
 	{
 		Enemy* pEnemy = new Enemy;
 		pEnemy->init();
+		pEnemy->setHandle(m_hEnemyGraghic);
 		pEnemy->setMain(this);
 	
-		pos.x = static_cast<float>(i % 10) * 65.0f + 100.0f; //あまり
-		pos.y = static_cast<float>(i / 10) * 65.0f + 50.0f;
+		pos.x = static_cast<float>(i % 10) * 60.0f + 100.0f; //あまり
+		pos.y = static_cast<float>(i / 10) * 60.0f + 50.0f;
 
 		pEnemy->set(pos);
 		m_pEnemyVt.push_back(pEnemy);
@@ -49,6 +55,8 @@ void SceneMain::init()
 	{
 		Object* pObject = new Object;
 		pObject->init();
+		pObject->setHandle(m_hObjectGrahic);
+		
 		pObject->setMain(this);
 
 		pos.x = static_cast<float>(i % 5) * 170.0f + 100.0f;
@@ -57,15 +65,16 @@ void SceneMain::init()
 		pObject->set(pos);
 		m_pObjectVt.push_back(pObject);
 	}
-
-	//グラフィックハンドルのロード
-	m_hPlayerGraghic = LoadGraph("data/player.jpeg");
-
 }
 
 void SceneMain::end()
 {
+	//グラフィックアンロード
 	DeleteGraph(m_hPlayerGraghic);
+	DeleteGraph(m_hEnemyGraghic);
+	DeleteGraph(m_hPlayerShotGraghic);
+	DeleteGraph(m_hEnemyShotGraghic);
+	DeleteGraph(m_hObjectGrahic);
 }
 
 SceneBase* SceneMain::update()
@@ -135,14 +144,14 @@ SceneBase* SceneMain::update()
 					}
 					if (isHitObject)
 					{	
-						//オブジェクトに10回弾が当たると消える
+						//オブジェクトに15回弾が当たると消える
 						m_hitObjectCount++;
-						if (m_hitObjectCount >= 10)
+						if (m_hitObjectCount >= 15)
 						{
 							pObject->objectDead();
 							m_hitObjectCount = 0;
 						}
-						pObject->chageSize(); //オブジェクトのサイズが小さくなる
+					//	pObject->chageSize(); //オブジェクトのサイズが小さくなる
 						pShot->shotDead();    //オブジェクトに弾が当たると弾が消える
 					}
 					//デバック用
@@ -217,6 +226,7 @@ bool SceneMain::playerShot(Vec2 pos)
 	Shot* pShot = new Shot;
 	pShot->init();
 	pShot->start(pos);
+	pShot->setHandle(m_hPlayerShotGraghic);
 	pShot->shotConfirPlayer(true);
 	m_pShotVt.push_back(pShot);
 
@@ -229,6 +239,7 @@ bool SceneMain::enemyShot(Vec2 pos)
 	Shot* pShot = new Shot;
 	pShot->init();
 	pShot->enemyStart(pos);
+	pShot->setHandle(m_hEnemyShotGraghic);
 	pShot->shotConfirPlayer(false);
 	m_pShotVt.push_back(pShot);
 

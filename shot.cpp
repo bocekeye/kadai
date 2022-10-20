@@ -4,34 +4,38 @@
 #include "Enemy.h"
 namespace
 {
+	//íeÇÃëÂÇ´Ç≥
 	constexpr int kSize = 10;
-	constexpr float kShotSpeed = -8.0f;
+
+	//ÉvÉåÉCÉÑÅ[ÇÃíeÇÃë¨ìx
+	constexpr float kShotPlayerSpeed = -8.0f;
+
+	//ìGÇÃíeÇÃë¨ìx
+	constexpr float kShotEnemySpeed = 5.0f;
 }
 
 
 Shot::Shot()
 {
+	m_handle = -1;
 	m_pos.x = 0.0f;
 	m_pos.y = 0.0f;
-
 	m_vec.y = 0.0f;
+
 	m_pMain = nullptr;
 	m_isPlayer = false;
 	m_isExist = false;
-
 }
 
-Shot::~Shot()
-{
 
-}
 void Shot::init()
 {
 	m_pos.x = 0.0f;
 	m_pos.y = 0.0f;
+	m_vec.y = 0.0f;
+
 	m_colSize.x = kSize;
 	m_colSize.y = kSize;
-	m_vec.y = 0.0f;
 }
 
 //ÉvÉåÉCÉÑÅ[ÇÃíe
@@ -41,7 +45,7 @@ void Shot::start(Vec2 pos)
 	m_pos = pos;
 	/*m_pos.x = m_colSize.x / 2;
 	m_pos.y = m_colSize.y / 2;*/
-	m_vec.y = kShotSpeed;
+	m_vec.y = kShotPlayerSpeed;
 }
 
 //ìGÇÃíe
@@ -51,7 +55,7 @@ void Shot::enemyStart(Vec2 pos)
 	m_pos = pos;
 	/*m_pos.x = m_colSize.x / 2;
 	m_pos.y = m_colSize.y / 2;*/
-	m_vec.y = -kShotSpeed;
+	m_vec.y = kShotEnemySpeed;
 }
 
 void Shot::update()
@@ -67,13 +71,13 @@ void Shot::update()
 	{
 		m_isExist = false;
 	}
-	
 }
 // ï\é¶
 void Shot::draw()
 {
 	if (!m_isExist) return;
-	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(255, 255, 255), true);
+//	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(255, 255, 255), true);
+	DrawGraphF(m_pos.x, m_pos.y, m_handle, true);
 }
 
 

@@ -13,7 +13,7 @@ public:
 	virtual ~Player(){}
 
 	// グラフィックデータ設定
-//	void setHandle(int handle) { m_handle = handle; }
+	void setHandle(int handle) { m_handle = handle; }
 
 	void init();
 	
@@ -36,11 +36,13 @@ public:
 	float getUp() const { return m_pos.y; }
 	float getBottom() const { return m_pos.y + m_colSize.y; }
 
+	// 情報の取得
 	Vec2 getPos() const { return m_pos; }
 	Vec2 getColSize() const { return m_colSize; }
 
 private:
 
+	// グラフィックハンドル
 	int m_handle;
 
 	//ショットの発射間隔

@@ -10,7 +10,10 @@ class Object
 {
 public:
 	Object();
-	virtual ~Object() {};
+	virtual ~Object() {}
+
+	// グラフィックデータ設定
+	void setHandle(int handle) { m_handle = handle; }
 
 	void init();
 
@@ -22,7 +25,7 @@ public:
 
 	void draw();
 
-	void chageSize();
+//	void chageSize();
 
 	bool isExist() { return m_isExist; }
 
@@ -40,6 +43,8 @@ public:
 	Vec2 getColSize() const { return m_colSize; }
 
 private:
+
+	// グラフィックハンドル
 	int m_handle;
 
 	int m_hitCount;
@@ -56,5 +61,4 @@ private:
 	//存在するか
 	bool  m_isExist;
 
-	int m_num;
 };

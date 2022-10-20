@@ -11,7 +11,10 @@ public:
 
 	Shot();
 
-	virtual ~Shot();
+	virtual ~Shot(){}
+
+	// グラフィックデータ設定
+	void setHandle(int handle) { m_handle = handle; }
 
 	void init();
 
@@ -19,7 +22,6 @@ public:
 
 	virtual void enemyStart(Vec2 pos);
 
-	
 	// 更新
 	virtual void update();
 	// 表示
@@ -30,7 +32,6 @@ public:
 
 	//敵との当たり判定
 	bool isCol(Enemy& enemy);
-
 
 	void shotDead();
 
@@ -50,6 +51,9 @@ public:
 
 protected:
 
+	// グラフィックハンドル
+	int m_handle;
+
 	//SceneMainのポインタ
 	SceneMain* m_pMain;
 
@@ -58,6 +62,7 @@ protected:
 
 	// 表示位置
 	Vec2	m_pos;
+
 	// 移動
 	Vec2	m_vec;
 

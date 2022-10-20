@@ -12,17 +12,24 @@ class SceneMain : public SceneBase
 public:
 	SceneMain()
 	{
-		m_textPosX = 0;
-		m_textVecX = 0;
 		m_hitEnemyCount = 0;
 		m_hitObjectCount = 0;
-		m_isEnd = false;
+		m_hitEnemyCount = 0;
+		m_hitObjectCount = 0;
+		m_hObjectGrahic = -1;
+
+		m_hPlayerGraghic = -1;
+		m_hEnemyGraghic = -1;
+		m_hPlayerShotGraghic = -1;
+		m_hEnemyShotGraghic = -1;
+		m_hObjectGrahic = -1;
+
 	}
 	virtual ~SceneMain() {}
 
 
 	virtual void init();
-	virtual void end() {}
+	virtual void end();
 
 	virtual SceneBase* update() override;
 
@@ -36,7 +43,7 @@ public:
 	//一番下にいる敵が弾を打てるかどうか
 	bool isCheckEnemyShot(Vec2 pos);
 
-	virtual bool isEnd() { return m_isEnd; }
+//	virtual bool isEnd() { return m_isEnd; }
 private:
 	// テキスト表示位置変更
 	int m_textPosX;
@@ -45,7 +52,12 @@ private:
 	int m_hitEnemyCount; //敵に弾が当たった時のカウント
 	int m_hitObjectCount; //オブジェクトに弾が当たった時のカウント
 
-	bool m_isEnd;
+	//プレイヤーグラフィックハンドル
+	int m_hPlayerGraghic;
+	int m_hEnemyGraghic;
+	int m_hPlayerShotGraghic;
+	int m_hEnemyShotGraghic;
+	int m_hObjectGrahic;
 
 	//プレイヤー
 	Player m_player;
