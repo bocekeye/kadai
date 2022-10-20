@@ -61,7 +61,7 @@ void Enemy::update()
 	if (m_waitFrame <= 0)
 	{
 		m_moveCount += m_slide;
-		if (m_slide > 0)  //
+		if (m_slide > 0)  //‰E•ûŒü‚ÌˆÚ“®
 		{
 			m_pos.x += kSpeed;
 			if (m_moveCount >= 0)
@@ -70,7 +70,7 @@ void Enemy::update()
 				m_slide = -1;
 			}
 		}
-		if (m_slide < 0)
+		if (m_slide < 0) //¶•ûŒü‚ÌˆÚ“®
 		{
 			m_pos.x -= kSpeed;
 			if (m_moveCount <= -10)

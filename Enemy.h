@@ -13,16 +13,13 @@ public:
 
 	void init();
 
-	void set(Vec2 pos);
+	void set(Vec2 pos); 
 
 	void end();
 
 	void update();
 
 	void draw();
-
-	//敵のサイズ
-	void setSize(Vec2 size) { m_size = size; }
 
 	bool isExist() { return m_isExist; }
 
@@ -47,10 +44,10 @@ private:
 	//SceneMainのポインタ
 	SceneMain* m_pMain;
 
-	Vec2 m_size;
-
+	//表示位置
 	Vec2 m_pos;
 
+	//移動
 	Vec2 m_vec;
 
 	// 当たり判定の幅と高さ
@@ -62,6 +59,7 @@ private:
 	//左右移動
 	int m_slide;
 
+	//左右移動の上限設定
 	int m_moveCount;
 
 	//敵の攻撃間隔

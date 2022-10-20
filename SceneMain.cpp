@@ -1,12 +1,16 @@
 #include "DxLib.h"
-#include "Enemy.h"
-#include "SceneMain.h"
 #include <cassert>
 #include <vector>
 
+#include "Enemy.h"
+#include "SceneMain.h"
+#include "SceneResult.h"
+#include "SceneFailResult.h"
+
 namespace
 {
-//	constexpr int khitEnemyCount = 30;
+	//敵の数
+	constexpr int kEnemyNum = 30;
 }
 
 void SceneMain::init()
@@ -18,6 +22,7 @@ void SceneMain::init()
 
 	Player* pPlayer = new Player;
 	pPlayer->init();
+	pPlayer->setHandle(m_hPlayerGraghic);
 	pPlayer->setMain(this);
 	m_pPlayerVt.push_back(pPlayer);
 
@@ -25,47 +30,43 @@ void SceneMain::init()
 	pShot->init();
 	pShot->setMain(this);
 	
-
 	//敵の生成
-	for (int i = 0; i < 30; i++)	
+	for (int i = 0; i < kEnemyNum; i++)
 	{
 		Enemy* pEnemy = new Enemy;
 		pEnemy->init();
 		pEnemy->setMain(this);
 	
-		pos.x = static_cast<float>(i % 10) * 65.0f + 100.0f;
+		pos.x = static_cast<float>(i % 10) * 65.0f + 100.0f; //あまり
 		pos.y = static_cast<float>(i / 10) * 65.0f + 50.0f;
 
 		pEnemy->set(pos);
 		m_pEnemyVt.push_back(pEnemy);
 	}
-
+	
+	//オブジェクトの生成
 	for (int i = 0; i < 4; i++)
 	{
 		Object* pObject = new Object;
 		pObject->init();
 		pObject->setMain(this);
 
-	
 		pos.x = static_cast<float>(i % 5) * 170.0f + 100.0f;
 		pos.y = 400.0f;
 
 		pObject->set(pos);
 		m_pObjectVt.push_back(pObject);
 	}
+
+	//グラフィックハンドルのロード
+	m_hPlayerGraghic = LoadGraph("data/player.jpeg");
+
 }
 
-//void SceneMain::end()
-//{
-//	for (auto& pShot : m_pShotVt)
-//	{
-//		assert(pShot);
-//
-//		delete pShot;
-//		pShot = nullptr;
-//	}
-//
-//}
+void SceneMain::end()
+{
+	DeleteGraph(m_hPlayerGraghic);
+}
 
 SceneBase* SceneMain::update()
 {
@@ -115,30 +116,34 @@ SceneBase* SceneMain::update()
 					if (isHitEnemy)
 					{	
 						pEnemy->enemyDead();
+
+						//敵を全部倒したらクリア画面に行く
 						m_hitEnemyCount++;
-						if (m_hitEnemyCount >= 30)
+						if (m_hitEnemyCount >= kEnemyNum)
 						{
-							m_isEnd = true;
+							return (new SceneResult);
 							m_hitEnemyCount = 0;
 						}
 					}
 					if (isHitPlayer)
 					{
-						//pPlayer->playerDead();
+						pPlayer->playerDead();
 						pShot->shotDead();
-				
-					//	m_isEnd = true;
+						
+						//プレイヤーが死んだら失敗画面に行く
+						return (new SceneFailResult);
 					}
 					if (isHitObject)
 					{	
+						//オブジェクトに10回弾が当たると消える
 						m_hitObjectCount++;
 						if (m_hitObjectCount >= 10)
 						{
 							pObject->objectDead();
 							m_hitObjectCount = 0;
 						}
-						pObject->chageSize();
-						pShot->shotDead();
+						pObject->chageSize(); //オブジェクトのサイズが小さくなる
+						pShot->shotDead();    //オブジェクトに弾が当たると弾が消える
 					}
 					//デバック用
 					if (isHitShot)
@@ -169,14 +174,13 @@ SceneBase* SceneMain::update()
 		}
 		it++;
 	}
-
 	return this;
-
 }
 
+//描画
 void SceneMain::draw()
 {
-	DrawString(m_textPosX, 0, "メイン画面", GetColor(255, 255, 255));
+//	DrawString(m_textPosX, 0, "メイン画面", GetColor(255, 255, 255));
 
 	for (auto& pPlayer : m_pPlayerVt)
 	{
@@ -189,8 +193,8 @@ void SceneMain::draw()
 		assert(pEnemy);
 		pEnemy->draw();
 	}
-	DrawFormatString(0, 30, GetColor(255, 255, 255), "敵の数:%d", m_pEnemyVt.size());
 
+	DrawFormatString(0, 30, GetColor(255, 255, 255), "敵の数:%d", m_pEnemyVt.size());
 
 	for (auto& pShot : m_pShotVt)
 	{
@@ -236,10 +240,9 @@ bool SceneMain::isCheckEnemyShot(Vec2 shotPos) //pos = 弾の発射位置
 {
 	for (auto& pEnemy : m_pEnemyVt)
 	{
-		if (shotPos.y > pEnemy->getBottom())     continue;      //弾より上に敵がいた場合チェックしない
+		if (shotPos.y > pEnemy->getBottom()) continue;      //弾より上に敵がいた場合チェックしない
 		if (shotPos.x > pEnemy->getLeft())   continue;      //弾より左に敵がいた場合チェックしない
 		if (shotPos.x < pEnemy->getRight())  continue;      //弾より右に敵がいた場合チェックしない
-//		if (shotPos.y < pEnemy->getBottom()) continue;
 
 		return false;
 	}

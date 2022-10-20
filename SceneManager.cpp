@@ -28,6 +28,9 @@ void SceneManager::init(SceneKind kind)
 	case SceneManager::kSceneKindResult:
 		m_pScene = new SceneResult;
 		break;
+	case SceneManager::kSceneFailResult:
+		m_pScene = new SceneResult;
+		break;
 	case SceneManager::kSceneKindNum:
 	default:
 		assert(false);

@@ -8,8 +8,8 @@ public:
 	virtual ~SceneBase() {}
 
 
-	 void init() {}
-	 void end() {}
+	virtual void init() {}
+	virtual void end() {}
 
 	 virtual SceneBase* update() { return this; }
 	 virtual void draw() {}

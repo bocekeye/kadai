@@ -1,16 +1,17 @@
-#include "SceneResult.h"
 #include "game.h"
 #include "DxLib.h"
+
+#include "SceneResult.h"
+#include "SceneTitle.h"
 
 namespace
 {
 	constexpr int kResultTime = 200;
 }
 
-
 void SceneResult::init()
 {
-	m_textPosX = Game::kScreenWidth / 2;
+	m_textPosX = Game::kScreenWidth / 2 - 30;
 	m_textPosY = Game::kScreenHeight / 2;
 	m_resultTime = kResultTime;
 	m_isEnd = false;
@@ -23,7 +24,7 @@ SceneBase* SceneResult::update()
 	if (m_resultTime <= 0)
 	{
 		m_resultTime = kResultTime;
-		m_isEnd = true;
+		return (new SceneTitle);
 	}
 
 	return this;
@@ -31,5 +32,5 @@ SceneBase* SceneResult::update()
 
 void SceneResult::draw()
 {
-	DrawString(m_textPosX, m_textPosY, "GAME OVER", GetColor(255, 255, 255));
+	DrawString(m_textPosX, m_textPosY, "GAME Clear", GetColor(255, 255, 255));
 }

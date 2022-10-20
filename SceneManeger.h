@@ -3,6 +3,7 @@
 #include "SceneTitle.h"
 #include "SceneMain.h"
 #include "SceneResult.h"
+#include "SceneFailResult.h"
 
 class SceneManager
 {
@@ -13,6 +14,7 @@ public:
 		kSceneKindTitle,
 		kSceneKindMain,
 		kSceneKindResult,
+		kSceneFailResult,
 
 		kSceneKindNum
 	}SceneKind;
