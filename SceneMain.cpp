@@ -5,6 +5,8 @@
 #include "SceneResult.h"
 #include "SceneFailResult.h"
 
+#include "game.h"
+
 #include <cassert>
 #include <vector>
 
@@ -59,7 +61,7 @@ void SceneMain::init()
 		
 		pObject->setMain(this);
 
-		pos.x = static_cast<float>(i % 5) * 170.0f + 100.0f;
+		pos.x = static_cast<float>(i % 5) * 150.0f + 120.0f;
 		pos.y = 400.0f;
 
 		pObject->set(pos);
@@ -75,6 +77,38 @@ void SceneMain::end()
 	DeleteGraph(m_hPlayerShotGraghic);
 	DeleteGraph(m_hEnemyShotGraghic);
 	DeleteGraph(m_hObjectGrahic);
+
+	for (auto& pPlayer : m_pPlayerVt)
+	{
+		assert(pPlayer);
+
+		delete pPlayer;
+		pPlayer = nullptr;
+	}
+
+	for (auto& pEnemy : m_pEnemyVt)
+	{
+		assert(pEnemy);
+
+		delete pEnemy;
+		pEnemy = nullptr;
+	}
+
+	for (auto& pShot : m_pShotVt)
+	{
+		assert(pShot);
+
+		delete pShot;
+		pShot = nullptr;
+	}
+
+	for (auto& pObject : m_pObjectVt)
+	{
+		assert(pObject);
+
+		delete pObject;
+		pObject = nullptr;
+	}
 }
 
 SceneBase* SceneMain::update()
@@ -92,11 +126,25 @@ SceneBase* SceneMain::update()
 		pEnemy->update();
 	}
 	//弾
-	for (auto& pShot : m_pShotVt)
+	std::vector<Shot*>::iterator it = m_pShotVt.begin();
+	while (it != m_pShotVt.end())
 	{
+		auto& pShot = (*it);
 		assert(pShot);
 		pShot->update();
+
+		if (!pShot->isExist())
+		{
+			delete pShot;
+			pShot = nullptr;
+
+			//vectorの要素削除
+			it = m_pShotVt.erase(it); //eraseは削除した次の要素を返してくれる
+			continue;
+		}
+		it++;
 	}
+
 	//オブジェクト
 	for (auto& pObject : m_pObjectVt)
 	{
@@ -104,7 +152,6 @@ SceneBase* SceneMain::update()
 		pObject->update();
 	}
 
-	std::vector<Shot*>::iterator it = m_pShotVt.begin();
 
 	for (auto& pShot : m_pShotVt)
 	{
@@ -118,12 +165,14 @@ SceneBase* SceneMain::update()
 					bool isHitEnemy = pEnemy->isCol(*pShot);   //弾が敵に当たると敵が消える
 					bool isHitPlayer = pPlayer->isCol(*pShot); //弾がプレイヤーに当たるとプレイヤーが消える
 					bool isHitObject = pObject->isCol(*pShot); //弾がオブジェクトに当たるとオブジェクトが消える
+					bool isCompareEnemy = pEnemy->isCompare(*pPlayer);
 					if (isHitShot) //isHit = true
 					{
 						pShot->shotDead();
 					}
 					if (isHitEnemy)
 					{	
+						Vec2 pos;
 						pEnemy->enemyDead();
 
 						//敵を全部倒したらクリア画面に行く
@@ -132,7 +181,7 @@ SceneBase* SceneMain::update()
 						{
 							return (new SceneResult);
 							m_hitEnemyCount = 0;
-						}
+						}	
 					}
 					if (isHitPlayer)
 					{
@@ -154,43 +203,30 @@ SceneBase* SceneMain::update()
 					//	pObject->chageSize(); //オブジェクトのサイズが小さくなる
 						pShot->shotDead();    //オブジェクトに弾が当たると弾が消える
 					}
+					if (isCompareEnemy)
+					{
+						return (new SceneFailResult);
+					}
 					//デバック用
-					if (isHitShot)
+					/*if (isHitShot)
 					{
 						DrawString(0, 45, "HIT!!!!!", GetColor(255, 255, 255));
 					}
 					else
 					{
 						DrawString(0, 60, "NO HIT", GetColor(255, 255, 255));
-					}	
+					}	*/
 				}		
 			}
 		}	
 	}
-
-	while (it != m_pShotVt.end())
-	{
-		auto& pShot = (*it);
-
-		if (!pShot->isExist())
-		{
-			delete pShot;
-			pShot = nullptr;
-
-			//vectorの要素削除
-			it = m_pShotVt.erase(it); //eraseは削除した次の要素を返してくれる
-			continue;
-		}
-		it++;
-	}
+	
 	return this;
 }
 
 //描画
 void SceneMain::draw()
 {
-//	DrawString(m_textPosX, 0, "メイン画面", GetColor(255, 255, 255));
-
 	for (auto& pPlayer : m_pPlayerVt)
 	{
 		assert(pPlayer);
@@ -218,7 +254,10 @@ void SceneMain::draw()
 		assert(pObject);
 		pObject->draw();
 	}
+
+	DrawString(160,10, "-----キーボードはXまたはPADはAで弾を発射できます-----", GetColor(255, 255, 255));
 }
+
 
 //プレイヤーの弾の生成
 bool SceneMain::playerShot(Vec2 pos)

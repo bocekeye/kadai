@@ -11,7 +11,7 @@ namespace
 
 void SceneFailResult::init()
 {
-	m_textPosX = Game::kScreenWidth / 2 - 30;
+	m_textPosX = Game::kScreenWidth / 2 - 40;
 	m_textPosY = Game::kScreenHeight / 2;
 	m_resultTime = kResultTime;
 	m_isEnd = false;

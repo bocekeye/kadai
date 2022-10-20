@@ -45,9 +45,6 @@ public:
 
 //	virtual bool isEnd() { return m_isEnd; }
 private:
-	// テキスト表示位置変更
-	int m_textPosX;
-	int m_textVecX;
 
 	int m_hitEnemyCount; //敵に弾が当たった時のカウント
 	int m_hitObjectCount; //オブジェクトに弾が当たった時のカウント

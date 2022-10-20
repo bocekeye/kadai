@@ -32,5 +32,5 @@ SceneBase* SceneResult::update()
 
 void SceneResult::draw()
 {
-	DrawString(m_textPosX, m_textPosY, "GAME Clear", GetColor(255, 255, 255));
+	DrawString(m_textPosX, m_textPosY, "GAME CLEAR", GetColor(255, 255, 255));
 }

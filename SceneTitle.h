@@ -9,7 +9,6 @@ public:
 	{
 		m_textPosX = 0;
 		m_textPosY = 0;
-		m_textVecY = 0;
 		m_isEnd = false;
 	}
 	virtual ~SceneTitle() {}
@@ -24,7 +23,6 @@ public:
 private:
 	int m_textPosX;
 	int m_textPosY;
-	int m_textVecY;
 
 	int m_isEnd;
 

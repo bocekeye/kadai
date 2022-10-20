@@ -77,7 +77,7 @@ void Shot::draw()
 {
 	if (!m_isExist) return;
 //	DrawBox(m_pos.x, m_pos.y, m_pos.x + m_colSize.x, m_pos.y + m_colSize.y, GetColor(255, 255, 255), true);
-	DrawGraphF(m_pos.x, m_pos.y, m_handle, true);
+	DrawGraphF(m_pos.x +  8, m_pos.y, m_handle, true);
 }
 
 
@@ -98,7 +98,6 @@ bool Shot::isCol(Enemy& enemy)
 	{
 		return false;
 	}
-
 
 	return true;
 }

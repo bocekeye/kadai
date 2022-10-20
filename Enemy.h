@@ -1,5 +1,7 @@
 #include "Vec2.h"
 
+class Player;
+
 class Shot;
 
 class SceneMain;
@@ -28,6 +30,8 @@ public:
 
 	//’e‚Æ‚Ì“–‚½‚è”»’è
 	bool isCol(Shot& shot);
+
+	bool isCompare(Player& player);
 
 	void enemyDead();
 

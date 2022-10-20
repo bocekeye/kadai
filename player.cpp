@@ -7,13 +7,13 @@
 namespace
 {
 	//プレイヤーの左右移動速度
-	constexpr float kSpeed = 0.2f;
+	constexpr float kSpeed = 0.16f;
 
 	//プレイヤーのサイズ
 	constexpr int kSize = 25.0f;
 
 	//ショット間隔
-	constexpr int kShotInterval = 20;
+	constexpr int kShotInterval = 30;
 }
 
 
@@ -32,8 +32,8 @@ void Player::init()
 	m_pos.y = Game::kScreenHeight - 100.0f;
 	m_colSize.x = kSize;
 	m_colSize.y = kSize;
-	m_vec.x = 0;
-	m_vec.y = 0;
+	m_vec.x = kSpeed;
+
 	m_shotInterval = 0;
 
 	m_isExist = true;
@@ -46,6 +46,8 @@ void Player::update()
 	m_shotInterval--;
 	if (m_shotInterval < 0) m_shotInterval = 0;
 
+
+	//存在している間だけ弾を出す
 	if (m_isExist)
 	{
 		if (m_shotInterval <= 0)

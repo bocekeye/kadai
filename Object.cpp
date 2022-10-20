@@ -11,6 +11,8 @@ namespace
 
 Object::Object()
 {
+	m_hitCount = 0;
+	m_handle = -1;
 	m_pMain = nullptr;
 	m_isExist = false;
 }
@@ -66,13 +68,5 @@ bool Object::isCol(Shot& shot)
 
 void Object::objectDead()
 {
-	/*m_hitCount++;
-	m_num += m_hitCount;
-	if (m_num >= 5)
-	{
-		m_isExist = false;
-		m_num = 0;
-	}*/
-
 	m_isExist = false;
 }

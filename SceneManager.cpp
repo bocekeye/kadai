@@ -6,68 +6,45 @@
 
 SceneManager::SceneManager()
 {
-	m_kind = kSceneKindTitle;
 	m_pScene = nullptr;
 }
-SceneManager::~SceneManager()
+// 初期化
+void SceneManager::init()
 {
-
+	m_pScene = new SceneTitle;
+	m_pScene->init();
 }
-
-void SceneManager::init(SceneKind kind)
-{
-	m_kind = kind;
-	switch (m_kind)
-	{
-	case SceneManager::kSceneKindTitle:
-		m_pScene = new SceneTitle;
-		break;
-	case SceneManager::kSceneKindMain:
-		m_pScene = new SceneMain;
-		break;
-	case SceneManager::kSceneKindResult:
-		m_pScene = new SceneResult;
-		break;
-	case SceneManager::kSceneFailResult:
-		m_pScene = new SceneResult;
-		break;
-	case SceneManager::kSceneKindNum:
-	default:
-		assert(false);
-		break;
-	}
-}
-
+// 終了
 void SceneManager::end()
 {
+	// 確認処理
 	assert(m_pScene);
-	if (!m_pScene) return;
+	if (!m_pScene)	return;
 
 	m_pScene->end();
 	delete m_pScene;
 }
-
+// 毎フレームの処理
 void SceneManager::update()
 {
+	// 確認処理
 	assert(m_pScene);
-	if (!m_pScene) return;
+	if (!m_pScene)	return;
+	// SceneBaseのupdate処理呼び出し
 	SceneBase* pScene = m_pScene->update();
-
 	if (pScene != m_pScene)
 	{
-		// 前のシーンの終了処理
 		m_pScene->end();
 		delete m_pScene;
-
+		// 初期化
 		m_pScene = pScene;
 		m_pScene->init();
 	}
 }
-
+// 描画
 void SceneManager::draw()
 {
 	assert(m_pScene);
-	if (!m_pScene) return;
-
+	if (!m_pScene)	return;
 	m_pScene->draw();
 }

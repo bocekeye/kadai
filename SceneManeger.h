@@ -1,38 +1,22 @@
 #pragma once
 
-#include "SceneTitle.h"
-#include "SceneMain.h"
-#include "SceneResult.h"
-#include "SceneFailResult.h"
+#include "SceneBase.h"
 
 class SceneManager
 {
 public:
-	// シーンの種類定義
-	typedef enum SceneKind
-	{
-		kSceneKindTitle,
-		kSceneKindMain,
-		kSceneKindResult,
-		kSceneFailResult,
-
-		kSceneKindNum
-	}SceneKind;
-
-public:
 	SceneManager();
-	virtual ~SceneManager();
-
-	void init(SceneKind kind = kSceneKindTitle);
+	virtual ~SceneManager() {}
+	// 初期化
+	void init();
+	// 終了
 	void end();
-
+	// 毎フレームの処理
 	void update();
+	// 描画
 	void draw();
 
-
 private:
-	SceneKind	m_kind;
-
+	// シーンベースポインタ
 	SceneBase* m_pScene;
-	
-}; 
+};

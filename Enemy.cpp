@@ -98,6 +98,11 @@ void Enemy::update()
 			}
 		}
 	}
+
+	if (m_pos.y >= Game::kScreenHeight - 100.0f)
+	{
+		
+	}
 }
 
 void Enemy::draw()
@@ -126,6 +131,18 @@ bool Enemy::isCol(Shot& shot)
 
 	return true;
 }
+
+//プレイヤーより敵の座標が大きくなったらゲームを終了させるため
+bool Enemy::isCompare(Player& player)
+{
+	if (player.getLeft() > getRight()) return false;
+	if (player.getRight() < getLeft()) return false;
+	if (player.getUp() > getBottom())  return false;
+	if (player.getBottom() < getUp())  return false;
+
+	return true;
+}
+
 void Enemy::enemyDead()
 {
 	m_isExist = false;
