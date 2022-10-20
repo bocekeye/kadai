@@ -43,13 +43,16 @@ void Player::update()
 	m_shotInterval--;
 	if (m_shotInterval < 0) m_shotInterval = 0;
 
-	if (m_shotInterval <= 0)
+	if (m_isExist)
 	{
-		if (padState & PAD_INPUT_2)
+		if (m_shotInterval <= 0)
 		{
-			if (m_pMain->playerShot(getPos()))
+			if (padState & PAD_INPUT_2)
 			{
-				m_shotInterval = kShotInterval;
+				if (m_pMain->playerShot(getPos()))
+				{
+					m_shotInterval = kShotInterval;
+				}
 			}
 		}
 	}

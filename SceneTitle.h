@@ -17,7 +17,7 @@ public:
 	virtual void init();
 	virtual void end() {}
 
-	virtual void update();
+	virtual SceneBase* update() override;
 	virtual void draw();
 
 	virtual bool isEnd() { return m_isEnd; }

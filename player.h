@@ -10,7 +10,7 @@ class Player
 {
 public:
 	Player();
-	virtual ~Player(){};
+	virtual ~Player(){}
 
 	// グラフィックデータ設定
 //	void setHandle(int handle) { m_handle = handle; }

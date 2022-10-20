@@ -57,30 +57,30 @@ void Enemy::end()
 }
 void Enemy::update()
 {
-	//m_waitFrame--;
-	//if (m_waitFrame <= 0)
-	//{
-	//	m_moveCount += m_slide;
-	//	if (m_slide > 0)  //
-	//	{
-	//		m_pos.x += kSpeed;
-	//		if (m_moveCount >= 0)
-	//		{
-	//			m_pos.y += 20.0f;
-	//			m_slide = -1;
-	//		}
-	//	}
-	//	if (m_slide < 0)
-	//	{
-	//		m_pos.x -= kSpeed;
-	//		if (m_moveCount <= -10)
-	//		{
-	//			m_pos.y += 20.0f;
-	//			m_slide = 1;
-	//		}
-	//	}
-	//	m_waitFrame = kWaitFrame;
-	//}
+	m_waitFrame--;
+	if (m_waitFrame <= 0)
+	{
+		m_moveCount += m_slide;
+		if (m_slide > 0)  //
+		{
+			m_pos.x += kSpeed;
+			if (m_moveCount >= 0)
+			{
+				m_pos.y += 20.0f;
+				m_slide = -1;
+			}
+		}
+		if (m_slide < 0)
+		{
+			m_pos.x -= kSpeed;
+			if (m_moveCount <= -10)
+			{
+				m_pos.y += 20.0f;
+				m_slide = 1;
+			}
+		}
+		m_waitFrame = kWaitFrame;
+	}
 
 	m_enemyShotInterval--;
 
@@ -91,14 +91,15 @@ void Enemy::update()
 	{
 		if (m_enemyShotInterval <= 0)
 		{
-		
-			if (m_pMain->enemyShot(getPos()))
+			if (m_pMain->isCheckEnemyShot(getPos()))
 			{
-				m_enemyShotInterval = kEnemyShotInterval;
+				if (m_pMain->enemyShot(getPos()))
+				{
+					m_enemyShotInterval = kEnemyShotInterval;
+				}
 			}
 		}
 	}
-
 }
 
 void Enemy::draw()
@@ -129,5 +130,4 @@ bool Enemy::isCol(Shot& shot)
 void Enemy::enemyDead()
 {
 	m_isExist = false;
-	
 }

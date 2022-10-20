@@ -34,20 +34,24 @@ void Shot::init()
 	m_vec.y = 0.0f;
 }
 
+//ÉvÉåÉCÉÑÅ[ÇÃíe
 void Shot::start(Vec2 pos)
 {
 	m_isExist = true;
 	m_pos = pos;
+	/*m_pos.x = m_colSize.x / 2;
+	m_pos.y = m_colSize.y / 2;*/
 	m_vec.y = kShotSpeed;
 }
 
+//ìGÇÃíe
 void Shot::enemyStart(Vec2 pos)
 {
 	m_isExist = true;
 	m_pos = pos;
-//	m_pos.x = m_colSize.x / 2;
+	/*m_pos.x = m_colSize.x / 2;
+	m_pos.y = m_colSize.y / 2;*/
 	m_vec.y = -kShotSpeed;
-
 }
 
 void Shot::update()

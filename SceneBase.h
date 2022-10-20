@@ -11,8 +11,8 @@ public:
 	 void init() {}
 	 void end() {}
 
-	 void update() {}
-	 void draw() {}
+	 virtual SceneBase* update() { return this; }
+	 virtual void draw() {}
 
 	// ƒV[ƒ“I—¹
 	virtual bool isEnd() { return false; }

@@ -1,6 +1,6 @@
 #include "DxLib.h"
 #include "SceneTitle.h"	
-
+#include "SceneMain.h"
 
 void SceneTitle::init()
 {
@@ -12,13 +12,16 @@ void SceneTitle::init()
 	m_isEnd = false;
 }
 
-void SceneTitle::update()
+SceneBase* SceneTitle::update()
 {
 	int padState = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	if (padState & PAD_INPUT_1)
 	{
-		m_isEnd = true;
+		return(new SceneMain);
+		//m_isEnd = true;
 	}
+
+	return this;
 }
 void SceneTitle::draw()
 {

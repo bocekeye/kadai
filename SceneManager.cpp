@@ -1,9 +1,13 @@
 #include "SceneManeger.h"
 #include <cassert>
+#include "SceneTitle.h"
+#include "SceneMain.h"
+#include "SceneResult.h"
 
 SceneManager::SceneManager()
 {
 	m_kind = kSceneKindTitle;
+	m_pScene = nullptr;
 }
 SceneManager::~SceneManager()
 {
@@ -16,10 +20,13 @@ void SceneManager::init(SceneKind kind)
 	switch (m_kind)
 	{
 	case SceneManager::kSceneKindTitle:
-		m_title.init();
+		m_pScene = new SceneTitle;
 		break;
 	case SceneManager::kSceneKindMain:
-		m_main.init();
+		m_pScene = new SceneMain;
+		break;
+	case SceneManager::kSceneKindResult:
+		m_pScene = new SceneResult;
 		break;
 	case SceneManager::kSceneKindNum:
 	default:
@@ -30,74 +37,34 @@ void SceneManager::init(SceneKind kind)
 
 void SceneManager::end()
 {
-	switch (m_kind)
-	{
-	case SceneManager::kSceneKindTitle:
-		m_title.end();
-		break;
-	case SceneManager::kSceneKindMain:
-		m_main.end();
-		break;
-	case SceneManager::kSceneKindNum:
-	default:
-		assert(false);
-		break;
-	}
+	assert(m_pScene);
+	if (!m_pScene) return;
+
+	m_pScene->end();
+	delete m_pScene;
 }
 
 void SceneManager::update()
 {
-	bool isEnd = false;
-	switch (m_kind)
+	assert(m_pScene);
+	if (!m_pScene) return;
+	SceneBase* pScene = m_pScene->update();
+
+	if (pScene != m_pScene)
 	{
-	case SceneManager::kSceneKindTitle:
-		m_title.update();
-		isEnd = m_title.isEnd();
-		break;
-	case SceneManager::kSceneKindMain:
-		m_main.update();
-		isEnd = m_main.isEnd();
-		break;
-	case SceneManager::kSceneKindNum:
-	default:
-		assert(false);
-		break;
-	}
-	if (isEnd)
-	{
-		switch (m_kind)
-		{
-		case SceneManager::kSceneKindTitle:
-			m_title.end();
-			m_main.init();
-			m_kind = kSceneKindMain;
-			break;
-		case SceneManager::kSceneKindMain:
-			m_main.end();
-			m_title.init();
-			m_kind = kSceneKindTitle;
-			break;
-		case SceneManager::kSceneKindNum:
-		default:
-			assert(false);
-			break;
-		}
+		// 前のシーンの終了処理
+		m_pScene->end();
+		delete m_pScene;
+
+		m_pScene = pScene;
+		m_pScene->init();
 	}
 }
 
 void SceneManager::draw()
 {
-	switch (m_kind)
-	{
-	case SceneManager::kSceneKindTitle:
-		m_title.draw();
-		break;
-	case SceneManager::kSceneKindMain:
-		m_main.draw();
-		break;
-	case SceneManager::kSceneKindNum:
-	default:
-		assert(false);
-		break;
-	}
+	assert(m_pScene);
+	if (!m_pScene) return;
+
+	m_pScene->draw();
 }

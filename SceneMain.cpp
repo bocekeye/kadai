@@ -6,14 +6,16 @@
 
 namespace
 {
-//	constexpr int kShotInterval = 20;
+//	constexpr int khitEnemyCount = 30;
 }
 
 void SceneMain::init()
 {
 	Vec2 pos;
-	m_textPosX = 0;
-	m_textVecX = 4;
+	m_hitEnemyCount = 0;
+	m_hitObjectCount = 0;
+	m_isEnd = false;
+
 	Player* pPlayer = new Player;
 	pPlayer->init();
 	pPlayer->setMain(this);
@@ -23,6 +25,8 @@ void SceneMain::init()
 	pShot->init();
 	pShot->setMain(this);
 	
+
+	//敵の生成
 	for (int i = 0; i < 30; i++)	
 	{
 		Enemy* pEnemy = new Enemy;
@@ -42,7 +46,8 @@ void SceneMain::init()
 		pObject->init();
 		pObject->setMain(this);
 
-		pos.x = static_cast<float>(i % 10) * 170.0f + 100.0f;
+	
+		pos.x = static_cast<float>(i % 5) * 170.0f + 100.0f;
 		pos.y = 400.0f;
 
 		pObject->set(pos);
@@ -62,26 +67,27 @@ void SceneMain::init()
 //
 //}
 
-void SceneMain::update()
+SceneBase* SceneMain::update()
 {
+	//プレイヤー
 	for (auto& pPlayer : m_pPlayerVt)
 	{
 		assert(pPlayer);
 		pPlayer->update();
 	}
-
+	//敵
 	for (auto& pEnemy : m_pEnemyVt)
 	{
 		assert(pEnemy);
 		pEnemy->update();
 	}
-
+	//弾
 	for (auto& pShot : m_pShotVt)
 	{
 		assert(pShot);
 		pShot->update();
 	}
-
+	//オブジェクト
 	for (auto& pObject : m_pObjectVt)
 	{
 		assert(pObject);
@@ -101,23 +107,37 @@ void SceneMain::update()
 					bool isHitShot = pShot->isCol(*pEnemy);    //弾が敵に当たると弾が消える
 					bool isHitEnemy = pEnemy->isCol(*pShot);   //弾が敵に当たると敵が消える
 					bool isHitPlayer = pPlayer->isCol(*pShot); //弾がプレイヤーに当たるとプレイヤーが消える
-					bool isHitObject = pObject->isCol(*pShot);
+					bool isHitObject = pObject->isCol(*pShot); //弾がオブジェクトに当たるとオブジェクトが消える
 					if (isHitShot) //isHit = true
 					{
 						pShot->shotDead();
 					}
 					if (isHitEnemy)
-					{
+					{	
 						pEnemy->enemyDead();
+						m_hitEnemyCount++;
+						if (m_hitEnemyCount >= 30)
+						{
+							m_isEnd = true;
+							m_hitEnemyCount = 0;
+						}
 					}
 					if (isHitPlayer)
 					{
-						/*pPlayer->playerDead();
-						pShot->shotDead();*/
+						//pPlayer->playerDead();
+						pShot->shotDead();
+				
+					//	m_isEnd = true;
 					}
 					if (isHitObject)
-					{
-						pObject->objectDead();
+					{	
+						m_hitObjectCount++;
+						if (m_hitObjectCount >= 10)
+						{
+							pObject->objectDead();
+							m_hitObjectCount = 0;
+						}
+						pObject->chageSize();
 						pShot->shotDead();
 					}
 					//デバック用
@@ -128,11 +148,10 @@ void SceneMain::update()
 					else
 					{
 						DrawString(0, 60, "NO HIT", GetColor(255, 255, 255));
-					}
-				}
-				
+					}	
+				}		
 			}
-		}
+		}	
 	}
 
 	while (it != m_pShotVt.end())
@@ -150,6 +169,9 @@ void SceneMain::update()
 		}
 		it++;
 	}
+
+	return this;
+
 }
 
 void SceneMain::draw()
@@ -206,5 +228,20 @@ bool SceneMain::enemyShot(Vec2 pos)
 	pShot->shotConfirPlayer(false);
 	m_pShotVt.push_back(pShot);
 
+	return true;
+}
+
+//一番下の敵のみに弾を打たせる
+bool SceneMain::isCheckEnemyShot(Vec2 shotPos) //pos = 弾の発射位置
+{
+	for (auto& pEnemy : m_pEnemyVt)
+	{
+		if (shotPos.y > pEnemy->getBottom())     continue;      //弾より上に敵がいた場合チェックしない
+		if (shotPos.x > pEnemy->getLeft())   continue;      //弾より左に敵がいた場合チェックしない
+		if (shotPos.x < pEnemy->getRight())  continue;      //弾より右に敵がいた場合チェックしない
+//		if (shotPos.y < pEnemy->getBottom()) continue;
+
+		return false;
+	}
 	return true;
 }

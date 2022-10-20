@@ -1,73 +1,60 @@
+#pragma once
+
 #include "Vec2.h"
 
 class Shot;
 
 class SceneMain;
 
-class Enemy
+class Object
 {
 public:
-
-	Enemy();
-	virtual ~Enemy();
+	Object();
+	virtual ~Object() {};
 
 	void init();
 
 	void set(Vec2 pos);
 
-	void end();
+	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 
 	void update();
 
 	void draw();
 
-	//敵のサイズ
-	void setSize(Vec2 size) { m_size = size; }
+	void chageSize();
 
 	bool isExist() { return m_isExist; }
 
 	//弾との当たり判定
 	bool isCol(Shot& shot);
 
-	void enemyDead();
+	void objectDead();
 
-	//当たり判定の座標
 	float getLeft() const { return m_pos.x; }
 	float getRight() const { return m_pos.x + m_colSize.x; }
-	float getUp() const { return m_pos.y; }    
+	float getUp() const { return m_pos.y; }
 	float getBottom() const { return m_pos.y + m_colSize.y; }
-
-	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 
 	Vec2 getPos() const { return m_pos; }
 	Vec2 getColSize() const { return m_colSize; }
 
 private:
+	int m_handle;
+
+	int m_hitCount;
 
 	//SceneMainのポインタ
 	SceneMain* m_pMain;
 
-	Vec2 m_size;
-
-	Vec2 m_pos;
-
-	Vec2 m_vec;
-
 	// 当たり判定の幅と高さ
 	Vec2 m_colSize;
 
-	//移動間隔
-	int m_waitFrame;
-
-	//左右移動
-	int m_slide;
-
-	int m_moveCount;
-
-	//敵の攻撃間隔
-	int m_enemyShotInterval;
+	//表示位置
+	Vec2 m_pos;
 
 	//存在するか
 	bool  m_isExist;
 
+	int m_num;
 };
