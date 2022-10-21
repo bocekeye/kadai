@@ -239,7 +239,7 @@ void SceneMain::draw()
 		pEnemy->draw();
 	}
 
-	DrawFormatString(0, 30, GetColor(255, 255, 255), "“G‚Ì”:%d", m_pEnemyVt.size());
+//	DrawFormatString(0, 30, GetColor(255, 255, 255), "“G‚Ì”:%d", m_pEnemyVt.size());
 
 	for (auto& pShot : m_pShotVt)
 	{
@@ -247,7 +247,7 @@ void SceneMain::draw()
 		pShot->draw();
 	}
 	//‘¶İ‚µ‚Ä‚¢‚é’e‚Ì”‚Ì•\¦
-	DrawFormatString(0, 15, GetColor(255, 255, 255), "’e‚Ì”:%d", m_pShotVt.size());
+//	DrawFormatString(0, 15, GetColor(255, 255, 255), "’e‚Ì”:%d", m_pShotVt.size());
 
 	for (auto& pObject : m_pObjectVt)
 	{

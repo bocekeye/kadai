@@ -27,5 +27,5 @@ void SceneTitle::draw()
 {
 	DrawString(m_textPosX + 20, m_textPosY, "シューティングゲーム", GetColor(255, 255, 255));
 	DrawString(m_textPosX - 60, m_textPosY + 30, "キーボードはZまたはPADはAを押してゲームスタート", GetColor(255, 255, 255));
-	DrawString(m_textPosX - 40, m_textPosY +80, "-----キーボードはXまたはPADはAで弾を発射できます-----", GetColor(255, 255, 255));
+	DrawString(m_textPosX -110, m_textPosY + 80, "-----キーボードはXまたはPADはAで弾を発射できます-----", GetColor(255, 255, 255));
 }
